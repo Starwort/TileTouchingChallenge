@@ -28,3 +28,6 @@ Configs: {
 		}
 	}
 }
+
+ChallengeFailedDebug: "{0} forgot that {2} was lava"
+ChallengeFailed: "{0} forgot that {1} was lava"

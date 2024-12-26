@@ -39,7 +39,14 @@ namespace TileTouchingChallenge.Systems {
             Collision.GetEntityEdgeTiles(touchedTiles, Player);
             foreach (Point touched in touchedTiles) {
                 var tile = Framing.GetTileSafely(touched);
-                if (!tile.HasTile || !tile.HasUnactuatedTile) {
+                if (
+                    !tile.HasTile 
+                    || !tile.HasUnactuatedTile 
+                    || !(
+                        Main.tileSolid[tile.TileType] 
+                        || Main.tileSolidTop[tile.TileType]
+                    )
+                ) {
                     continue;
                 }
                 var config = ModContent.GetInstance<ChallengeConfig>();
@@ -67,13 +74,16 @@ namespace TileTouchingChallenge.Systems {
             if (!config.SpawnSafetyPlatform) {
                 return;
             }
-            var x = Player.position.X;
-            var y = Player.position.Y + Player.height;
+            var x = (int)Player.position.X/16;
+            var y = (int)Player.position.Y/16 + Player.height/14;
             var tileToUse = TileType(config.SafetyPlatformBlock ?? "Terraria:" + TileID.Search.GetName(TileID.CandyCaneBlock));
-            for (int i = 0; i <= Player.width; i++) {
+            for (int i = 0; i <= Player.width/10; i++) {
                 try {
-                    Main.tile[(int) x, (int) y].ResetToType((ushort) tileToUse);
-                } catch (IndexOutOfRangeException) { return; }
+                    Main.tile[(int) x + i, (int) y].ResetToType((ushort) tileToUse);
+                } catch (IndexOutOfRangeException) {
+                    Main.NewText($"Failed to set {x + i} {y} to {tileToUse}");
+                    return;
+                }
             }
             if (config.DisableSafetyPlatformAfterSpawn) {
                 config.SpawnSafetyPlatform = false;
