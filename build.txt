@@ -1,0 +1,3 @@
+displayName = WoS Candy Cane Challenge
+author = Starwort
+version = 0.1

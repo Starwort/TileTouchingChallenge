@@ -1,0 +1,30 @@
+Configs: {
+	ChallengeConfig: {
+		DisplayName: Challenge Config
+
+		Whitelist: {
+			Label: Whitelist
+			Tooltip: ""
+		}
+
+		ShowInternalName: {
+			Label: Show Internal Name
+			Tooltip: ""
+		}
+
+		SafetyPlatformBlock: {
+			Label: Safety Platform Block
+			Tooltip: ""
+		}
+
+		SpawnSafetyPlatform: {
+			Label: Spawn Safety Platform
+			Tooltip: ""
+		}
+
+		DisableSafetyPlatformAfterSpawn: {
+			Label: Disable Safety Platform After Spawn
+			Tooltip: ""
+		}
+	}
+}

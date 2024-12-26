@@ -1,0 +1,1 @@
+Kills the player if they touch any non-whitelisted tiles. Whitelist defaults to allowing only Red and Green Candy Cane Blocks.
