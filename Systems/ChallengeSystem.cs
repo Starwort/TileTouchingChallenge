@@ -37,6 +37,7 @@ namespace TileTouchingChallenge.Systems {
         void KillIfFailed() {
             List<Point> touchedTiles = [];
             Collision.GetEntityEdgeTiles(touchedTiles, Player);
+            var config = ModContent.GetInstance<ChallengeConfig>();
             foreach (Point touched in touchedTiles) {
                 var tile = Framing.GetTileSafely(touched);
                 if (
@@ -44,21 +45,21 @@ namespace TileTouchingChallenge.Systems {
                     || !tile.HasUnactuatedTile 
                     || !(
                         Main.tileSolid[tile.TileType] 
-                        || Main.tileSolidTop[tile.TileType]
+                        || (Main.tileSolidTop[tile.TileType] && !config.AllowSemiSolids)
                     )
                 ) {
                     continue;
                 }
-                var config = ModContent.GetInstance<ChallengeConfig>();
                 if (config.Whitelist.Contains(TileName(tile.TileType))) {
                     continue;
                 }
                 Player.KillMe(
                     PlayerDeathReason.ByCustomReason(
-                        Language.GetTextValue(
+                        Language.GetOrRegister(
                             config.ShowInternalName
                                 ? "Mods.TileTouchingChallenge.ChallengeFailedDebug"
-                                : "Mods.TileTouchingChallenge.ChallengeFailed",
+                                : "Mods.TileTouchingChallenge.ChallengeFailed"
+                        ).Format(
                             Player.name,
                             DisplayName(tile.TileType),
                             TileName(tile.TileType)
@@ -69,22 +70,23 @@ namespace TileTouchingChallenge.Systems {
                 );
             }
         }
+
+        public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource) {
+            spawnedPlatformThisLife = false;
+        }
+        bool spawnedPlatformThisLife = false;
         void SpawnPlatform() {
             var config = ModContent.GetInstance<ChallengeConfig>();
-            if (!config.SpawnSafetyPlatform) {
+            if (!config.SpawnSafetyPlatform || spawnedPlatformThisLife) {
                 return;
             }
             var x = (int)Player.position.X/16;
             var y = (int)Player.position.Y/16 + Player.height/14;
             var tileToUse = TileType(config.SafetyPlatformBlock ?? "Terraria:" + TileID.Search.GetName(TileID.CandyCaneBlock));
             for (int i = 0; i <= Player.width/10; i++) {
-                try {
-                    Main.tile[(int) x + i, (int) y].ResetToType((ushort) tileToUse);
-                } catch (IndexOutOfRangeException) {
-                    Main.NewText($"Failed to set {x + i} {y} to {tileToUse}");
-                    return;
-                }
+                Main.tile[(int) x + i, (int) y].ResetToType((ushort) tileToUse);
             }
+            spawnedPlatformThisLife = true;
             if (config.DisableSafetyPlatformAfterSpawn) {
                 config.SpawnSafetyPlatform = false;
             }

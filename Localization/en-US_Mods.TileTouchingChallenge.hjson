@@ -8,23 +8,28 @@ Configs: {
 		}
 
 		ShowInternalName: {
-			Label: Show Internal Name
-			Tooltip: ""
+			Label: Show Internal Name in Death Message
+			Tooltip: Whether to show the internal name of the block causing the player's death
 		}
 
 		SafetyPlatformBlock: {
 			Label: Safety Platform Block
-			Tooltip: ""
+			Tooltip: The block to make the safety platform from
 		}
 
 		SpawnSafetyPlatform: {
 			Label: Spawn Safety Platform
-			Tooltip: ""
+			Tooltip: Whether to spawn a safety platform when the player spawns in
 		}
 
 		DisableSafetyPlatformAfterSpawn: {
 			Label: Disable Safety Platform After Spawn
-			Tooltip: ""
+			Tooltip: "If enabled, will disable '{$SpawnSafetyPlatform.Label}' after spawning the platform.\nIf disabled, will spawn the platform once each life."
+		}
+
+		AllowSemiSolids: {
+			Label: Allow Touching Semi-Solid Tiles
+			Tooltip: If enabled, will allow touching semi-solid furniture like Workbenches or Tables
 		}
 	}
 }

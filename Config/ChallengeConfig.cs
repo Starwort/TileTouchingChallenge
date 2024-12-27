@@ -22,5 +22,7 @@ namespace TileTouchingChallenge.Config {
         public bool SpawnSafetyPlatform = true;
         [DefaultValue(true)]
         public bool DisableSafetyPlatformAfterSpawn = true;
+        [DefaultValue(true)]
+        public bool AllowSemiSolids = false;
     }
 }
